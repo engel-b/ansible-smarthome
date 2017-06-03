@@ -1,0 +1,53 @@
+---
+# Dropbox
+# (https://www.digitalocean.com/community/tutorials/how-to-install-dropbox-client-as-a-service-on-ubuntu-14-04)
+- name: Install required packages 
+  apt: 
+    - name: "{{item}}"
+    - state: present 
+    - update_cache: yes
+  with_items: 
+    - libxml2-dev
+    - libxslt1-dev
+    - python-dev
+    - libxxf86vm-dev
+    - libxdamage-dev
+    - libxrender-dev
+    - libxcomposite-dev
+    - libxext-dev
+    - libxxf86vm-dev
+ 
+- name: Create dropbox folder
+  file:
+    path: /opt/dropbox
+    state: directory
+    mode: 0755
+ 
+# sudo tar xzfv dropbox-linux-x86_64.tar.gz --strip 1 -C /opt/dropbox
+- unarchive:
+    src: https://www.dropbox.com/download?plat=lnx.x86_64
+    dest: /opt/dropbox
+    remote_src: True
+    extra_opts: "--strip 1"
+
+- command: export DISPLAY=
+
+- command: /opt/dropbox/dropboxd
+
+- debug:
+    msg: "Link computer --> <STRG>+C"
+
+- name: Download file and force basic auth
+  get_url:
+    url: https://gist.githubusercontent.com/thisismitch/d0133d91452585ae2adc/raw/699e7909bdae922201b8069fde3011bbf2062048/dropbox
+    dest: /etc/init.d/dropbox
+    mode: "+x"
+ 
+- debug:
+    msg: "sudo nano /etc/default/dropbox -> DROPBOX_USERS="openhab" -> STRG+X"
+
+- debug:
+    msg: "sudo update-rc.d dropbox defaults"
+    
+- debug:
+    msg: "sudo service dropbox start"

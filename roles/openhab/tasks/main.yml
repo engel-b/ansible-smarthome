@@ -1,0 +1,26 @@
+    # openHAB
+    - name: Setup user openhab
+      user:
+        name: openhab
+        uid: 9001
+        shell: /bin/bash
+        groups: 
+        append: yes
+
+# openhab-User
+- mkdir -p /home/openhab/Dropbox/openhab/conf
+- mkdir -p /home/openhab/Dropbox/openhab/logs
+- mkdir -p /home/openhab/openhab
+- cd /home/openhab/openhab
+- mkdir addons userdata
+- ln -s /home/openhab/openhab/conf /home/openhab/Dropbox/openhab/conf
+- ln -s /home/openhab/openhab/userdata/logs /home/openhab/Dropbox/openhab/logs
+
+
+
+# https://community.openhab.org/t/running-openhab-2-in-docker/14267
+# https://hub.docker.com/r/openhab/openhab/
+$ sudo nano /etc/systemd/system/openhab2.service
+
+$ sudo systemctl enable openhab2.service
+$ sudo systemctl start openhab2.service

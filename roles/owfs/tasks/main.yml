@@ -1,0 +1,11 @@
+---
+# OWFS
+- name: Install owfs packages 
+  apt: 
+    - name: owfs
+
+# # in /etc/owfs.conf folgende Anpassungen vornehmen:
+# #! server: server = localhost:4304
+# #server: port = localhost:4304
+# SERVER: p 4304
+# !SERVER: s 4304

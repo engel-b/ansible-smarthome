@@ -1,0 +1,45 @@
+---
+# Docker
+- name: Docker group
+  group:
+    name: docker
+    gid: 999
+
+# http://docs.ansible.com/ansible/apt_key_module.html
+- command: apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+- apt_repository:
+    repo: deb https://apt.dockerproject.org/repo ubuntu-xenial main
+    filename: "docker"
+    
+- apt:
+    name: lxc-docker
+    purge: yes
+        
+- name: Install required packages 
+  apt: 
+    - name: "{{item}}"
+    - update_cache: yes
+  with_items: 
+    - apt-transport-https
+    - ca-certificates
+    - bridge-utils
+    - linux-image-extra-$(uname -r)
+    - linux-image-extra-virtual
+    - docker-engine
+
+- Start docker daemon
+  service:
+    name: docker
+    state: started
+
+- name: Container present
+  docker_container:
+    name: docker test
+    image: hello-world
+
+# sudo nano /etc/default/grub -> GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1" -> STRG+X
+# sudo update-grub
+
+- name: Enable docker
+  command: systemctl enable docker

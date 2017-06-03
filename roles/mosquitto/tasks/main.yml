@@ -1,0 +1,9 @@
+---
+# mosquitto (MQTT-Broker)
+- apt_repository:
+    repo: "ppa:mosquitto-dev/mosquitto-ppa"
+
+- name: Install required packages 
+  apt: 
+    - name: mosquitto
+    - update_cache: yes

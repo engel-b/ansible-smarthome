@@ -1,0 +1,11 @@
+---
+# Common
+- name: Install common packages 
+  apt: 
+    - name: "{{item}}"
+    - state: present 
+    - update_cache: yes
+  with_items: 
+´   - locate
+    - mc
+    - nano
