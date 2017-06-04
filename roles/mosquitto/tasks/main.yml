@@ -5,5 +5,5 @@
 
 - name: Install required packages 
   apt: 
-    - name: mosquitto
-    - update_cache: yes
+    name: mosquitto
+    update_cache: yes

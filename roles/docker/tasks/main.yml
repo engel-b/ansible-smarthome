@@ -11,31 +11,33 @@
 - apt_repository:
     repo: deb https://apt.dockerproject.org/repo ubuntu-xenial main
     filename: "docker"
-    
-- apt:
-    name: lxc-docker
-    purge: yes
-        
+
+- shell: echo $(uname -r)
+  register: kernel
+   
 - name: Install required packages 
   apt: 
-    - name: "{{item}}"
-    - update_cache: yes
+    name: "{{item}}"
+    update_cache: yes
   with_items: 
     - apt-transport-https
     - ca-certificates
     - bridge-utils
-    - linux-image-extra-$(uname -r)
+    - linux-image-extra-{{kernel.stdout}}
     - linux-image-extra-virtual
     - docker-engine
 
-- Start docker daemon
+- pip:
+    name: docker-py
+
+- name: Start docker daemon
   service:
     name: docker
     state: started
 
 - name: Container present
   docker_container:
-    name: docker test
+    name: dockertest
     image: hello-world
 
 # sudo nano /etc/default/grub -> GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1" -> STRG+X
