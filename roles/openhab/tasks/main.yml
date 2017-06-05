@@ -1,11 +1,16 @@
-    # openHAB
-    - name: Setup user openhab
-      user:
-        name: openhab
-        uid: 9001
-        shell: /bin/bash
-        groups: 
-        append: yes
+---
+# openHAB
+- name: Create usergroup {{OPENHAB_USERGROUP}}
+  group:
+    name: "{{OPENHAB_USERGROUP}}"
+
+- name: Create user {{OPENHAB_USER}}
+  user:
+    name: "{{OPENHAB_USER}}"
+    uid: 9001
+    shell: /bin/bash
+    group: {{OPENHAB_USERGROUP}}
+    system: yes
 
 # openhab-User
 - mkdir -p /home/openhab/Dropbox/openhab/conf
