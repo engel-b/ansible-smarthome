@@ -1,0 +1,3 @@
+- name: run_dropboxd
+  debug:
+    msg: Run /opt/dropbox/dropboxd, link the computer and press <STRG>+C 

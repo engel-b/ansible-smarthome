@@ -28,27 +28,23 @@
     dest: /tmp/dropbox-linux-x86_64.tar.gz
 
 # unarchive does not work...
-- command: tar xzfv /tmp/dropbox-linux-x86_64.tar.gz --strip 1 -C /opt/dropbox
+- name: Untar dropbox archive
+  command: tar xzfv /tmp/dropbox-linux-x86_64.tar.gz --strip 1 -C /opt/dropbox
 
 - shell: export DISPLAY=""
+  notify: run_dropboxd
 
-- command: /opt/dropbox/dropboxd
-# TODO: user interaction
-
-- debug:
-    msg: "Link computer --> <STRG>+C"
-
-- name: Download file and force basic auth
-  get_url:
-    url: https://gist.githubusercontent.com/thisismitch/d0133d91452585ae2adc/raw/699e7909bdae922201b8069fde3011bbf2062048/dropbox
+- name: Initscript
+  template:
+    src: initscript.j2
     dest: /etc/init.d/dropbox
-    mode: "+x"
- 
-- debug:
-    msg: 'sudo nano /etc/default/dropbox -> DROPBOX_USERS="openhab" -> STRG+X'
+    mode: u=rwx,g=rx,o=rx
 
-- debug:
-    msg: "sudo update-rc.d dropbox defaults"
+- name: Copy configuration
+  template:
+    src: dropbox.j2
+    dest: /etc/default/dropbox
     
-- debug:
-    msg: "sudo service dropbox start"
+- name: Make dropbox start on bootup
+  command: update-rc.d dropbox defaults
+    

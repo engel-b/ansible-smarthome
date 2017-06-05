@@ -4,6 +4,22 @@
   apt: 
     name: owfs
 
+- name: Configure owfs.conf
+  lineinfile:
+    dest: /etc/owfs.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '! server: server = localhost:4304', line: '#! server: server = localhost:4304' }
+    - { regexp: 'server: port = localhost:4304', line: '#server: port = localhost:4304' }
+    
+- name: Configure owfs.conf
+  lineinfile:
+    path: /etc/owfs.conf
+    line: "{{item}}"
+  with_items:
+    - '!SERVER: s 4304'
+    - 'SERVER: p 4304'
 # # in /etc/owfs.conf folgende Anpassungen vornehmen:
 # #! server: server = localhost:4304
 # #server: port = localhost:4304
