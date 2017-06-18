@@ -9,23 +9,28 @@
     name: "{{OPENHAB_USER}}"
     uid: 9001
     shell: /bin/bash
-    group: {{OPENHAB_USERGROUP}}
+    group: "{{OPENHAB_USERGROUP}}"
     system: yes
 
-# openhab-User
-- mkdir -p /home/openhab/Dropbox/openhab/conf
-- mkdir -p /home/openhab/Dropbox/openhab/logs
-- mkdir -p /home/openhab/openhab
-- cd /home/openhab/openhab
-- mkdir addons userdata
-- ln -s /home/openhab/openhab/conf /home/openhab/Dropbox/openhab/conf
-- ln -s /home/openhab/openhab/userdata/logs /home/openhab/Dropbox/openhab/logs
+- name: Ensure directory exists: {{OPENHAB_HOME}}
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: "{{OPENHAB_USER}}"
+    group: "{{OPENHAB_USERGROUP}}"
+  with_items:
+    - "{{OPENHAB_HOME}}"
+    - "{{OPENHAB_HOME}}"/addons
+    - "{{OPENHAB_HOME}}"/conf
+    - "{{OPENHAB_HOME}}"/userdata
+
+- template:
+    src: openhab2.service.j2
+    dest: /etc/systemd/system/openhab2.service
+
+# ln -s /home/openhab/openhab/conf /home/openhab/Dropbox/openhab/conf
+# ln -s /home/openhab/openhab/userdata/logs /home/openhab/Dropbox/openhab/logs
 
 
-
-# https://community.openhab.org/t/running-openhab-2-in-docker/14267
-# https://hub.docker.com/r/openhab/openhab/
-$ sudo nano /etc/systemd/system/openhab2.service
-
-$ sudo systemctl enable openhab2.service
-$ sudo systemctl start openhab2.service
+#$ sudo systemctl enable openhab2.service
+#$ sudo systemctl start openhab2.service
