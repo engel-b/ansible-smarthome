@@ -12,8 +12,6 @@ ExecStart=/usr/bin/docker run --name=%n --net=host \
   -v {{OPENHAB_HOME}}/userdata:/openhab/userdata \
   -v {{OPENHAB_HOME}}/addons:/openhab/addons \
   -v {{OPENHAB_HOME}}/.java:/openhab/.java \
-  --device=/dev/ttyUSB0 \
-  --user=<uid> \
   openhab/openhab:{{OPENHAB_VERSION}}-{{OPENHAB_ARCH}}
 ExecStop=/usr/bin/docker stop -t 2 %n ; /usr/bin/docker rm -f %n
 

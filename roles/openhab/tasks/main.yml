@@ -3,6 +3,7 @@
 - name: Create usergroup {{OPENHAB_USERGROUP}}
   group:
     name: "{{OPENHAB_USERGROUP}}"
+    gid: 9001
 
 - name: Create user {{OPENHAB_USER}}
   user:
@@ -12,7 +13,7 @@
     group: "{{OPENHAB_USERGROUP}}"
     system: yes
 
-- name: Ensure directory exists: {{OPENHAB_HOME}}
+- name: Ensure directory exists {{OPENHAB_HOME}}
   file:
     path: "{{item}}"
     state: directory
@@ -20,9 +21,9 @@
     group: "{{OPENHAB_USERGROUP}}"
   with_items:
     - "{{OPENHAB_HOME}}"
-    - "{{OPENHAB_HOME}}"/addons
-    - "{{OPENHAB_HOME}}"/conf
-    - "{{OPENHAB_HOME}}"/userdata
+    - "{{OPENHAB_HOME}}/addons"
+    - "{{OPENHAB_HOME}}/conf"
+    - "{{OPENHAB_HOME}}/userdata"
 
 - template:
     src: openhab2.service.j2
