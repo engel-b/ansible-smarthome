@@ -5,22 +5,22 @@
     name: docker
     gid: 999
 
-# http://docs.ansible.com/ansible/apt_key_module.html
-- command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-   
 - name: Add an apt key by id from a keyserver
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
 
-- shell: echo $(lsb_release -cs)
+- name: Get release
+  shell: echo $(lsb_release -cs)
   register: release
 
-- apt_repository:
+- name: Add docker repo
+  apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{release.stdout}} stable
     filename: "docker"
 
-- shell: echo $(uname -r)
+- name: Get kernel's version
+  shell: echo $(uname -r)
   register: kernel
    
 - name: Install required packages 
@@ -52,4 +52,6 @@
 # sudo update-grub
 
 - name: Enable docker
-  command: systemctl enable docker
+  service:
+    name: docker
+    enabled: yes 
