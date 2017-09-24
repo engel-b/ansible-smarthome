@@ -8,6 +8,7 @@
 - name: Get kernel's version
   shell: echo $(uname -r)
   register: kernel
+  changed_when: False
    
 - name: Install required packages 
   apt: 
@@ -29,6 +30,7 @@
 - name: Get release
   shell: echo $(lsb_release -cs)
   register: release
+  changed_when: False
 
 - name: Add docker repo
   apt_repository:
