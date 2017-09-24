@@ -53,8 +53,14 @@
     name: dockertest
     image: hello-world
 
-# sudo nano /etc/default/grub -> GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1" -> STRG+X
-# sudo update-grub
+- name: Configure boot param
+  lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX='
+    line: 'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
+    
+- name: update-grub
+  command: update-grub
 
 - name: Enable docker
   service:
