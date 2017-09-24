@@ -32,6 +32,8 @@
 # ln -s /home/openhab/openhab/conf /home/openhab/Dropbox/openhab/conf
 # ln -s /home/openhab/openhab/userdata/logs /home/openhab/Dropbox/openhab/logs
 
-
-#$ sudo systemctl enable openhab2.service
-#$ sudo systemctl start openhab2.service
+- name: Enable and start openhab2
+  service:
+    name: openhab2.service
+    enabled: yes 
+    state: restarted
