@@ -19,7 +19,7 @@
     - bridge-utils
     - linux-image-extra-{{kernel.stdout}}
     - linux-image-extra-virtual
-    - docker-ce
+    - python-pip
 
 - name: Add an apt key by id from a keyserver
   apt_key:
