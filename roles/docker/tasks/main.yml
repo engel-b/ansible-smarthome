@@ -6,10 +6,18 @@
     gid: 999
 
 # http://docs.ansible.com/ansible/apt_key_module.html
-- command: apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+- command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+   
+- name: Add an apt key by id from a keyserver
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+
+- shell: echo $(lsb_release -cs)
+  register: release
 
 - apt_repository:
-    repo: deb https://apt.dockerproject.org/repo ubuntu-xenial main
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{release.stdout}} stable
     filename: "docker"
 
 - shell: echo $(uname -r)
@@ -25,7 +33,7 @@
     - bridge-utils
     - linux-image-extra-{{kernel.stdout}}
     - linux-image-extra-virtual
-    - docker-engine
+    - docker-ce
 
 - pip:
     name: docker-py
