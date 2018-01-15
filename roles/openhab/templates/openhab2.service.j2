@@ -5,7 +5,10 @@ After=docker.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run --name=%n --net=host \
+ExecStart=/usr/bin/docker run \
+  --name=%n \
+  --net=host \
+  --tty \
   -v /etc/localtime:/etc/localtime:ro \
   -v /etc/timezone:/etc/timezone:ro \
   -v {{OPENHAB_HOME}}/conf:/openhab/conf \
