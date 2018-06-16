@@ -1,0 +1,20 @@
+[Unit]
+Description=asterisk
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run \
+  --name=%n \
+  --net=host \
+  --tty \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v /etc/timezone:/etc/timezone:ro \
+  -v {{ASTERISK_CONF_DIR}}:/etc/asterisk \
+  -v /home/bjoern/asterisk/hello-world.gsm:/var/lib/asterisk/sounds/hello-world.gsm \
+  justcoke/alpine-asterisk:15
+ExecStop=/usr/bin/docker stop -t 2 %n ; /usr/bin/docker rm -f %n
+
+[Install]
+WantedBy=multi-user.target

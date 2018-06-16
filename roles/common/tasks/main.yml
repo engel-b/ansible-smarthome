@@ -1,10 +1,9 @@
 ---
 - name: Install common packages 
-  apt: 
+  apt:
     name: '{{item}}'
     update_cache: yes
-  with_items: 
+  with_items:
     - locate
     - mc
     - nano
-

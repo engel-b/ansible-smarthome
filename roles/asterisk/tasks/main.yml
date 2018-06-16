@@ -1,0 +1,41 @@
+---
+# asterisk
+- name: Create user {{ASTERISK_USER}}
+  user:
+    name: "{{ASTERISK_USER}}"
+    uid: 9002
+    shell: /bin/bash
+    system: yes
+
+- name: Ensure directory exists {{ASTERISK_CONF_DIR}}
+  file:
+    path: "{{ASTERISK_CONF_DIR}}"
+    state: directory
+    owner: "{{ASTERISK_USER}}"
+    group: "{{ASTERISK_USERGROUP}}"
+
+- copy:
+    src: "hello-world.gsm"
+    dest: "{{ASTERISK_CONF_DIR}}/"
+    owner: "{{ASTERISK_USER}}"
+    group: "{{ASTERISK_USERGROUP}}"
+    mode: 600
+
+- template:
+    src: "{{ item }}"
+    dest: "{{ASTERISK_CONF_DIR}}/"
+    owner: "{{ASTERISK_USER}}"
+    group: "{{ASTERISK_USERGROUP}}"
+    mode: 600
+  with_fileglob:
+    - conf/*
+
+- template:
+    src: asterisk.service.j2
+    dest: /etc/systemd/system/asterisk.service
+
+- name: Enable and start asterisk
+  service:
+    name: asterisk.service
+    enabled: yes
+    state: restarted
