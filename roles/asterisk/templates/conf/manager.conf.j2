@@ -158,7 +158,7 @@ bindaddr = 0.0.0.0
 [{{ASTERISK_AMI_USER}}]
 secret = {{ASTERISK_AMI_PASS}}
 deny=0.0.0.0/0.0.0.0
-permit={{ansible_default_ipv4}}/255.255.255.0
+permit={{ansible_default_ipv4.address}}/255.255.255.0
 permit=127.0.0.1/255.255.255.0
 read = call
 write = none
