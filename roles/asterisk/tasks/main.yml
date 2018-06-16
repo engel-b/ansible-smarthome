@@ -28,7 +28,7 @@
     group: "{{ASTERISK_USERGROUP}}"
     mode: 600
   with_fileglob:
-    - conf/*
+    - templates/conf/*
 
 - template:
     src: asterisk.service.j2
