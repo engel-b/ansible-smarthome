@@ -9,6 +9,7 @@
   user:
     name: "{{OPENHAB_USER}}"
     uid: 9001
+    create_home: no
     shell: /bin/bash
     group: "{{OPENHAB_USERGROUP}}"
     system: yes

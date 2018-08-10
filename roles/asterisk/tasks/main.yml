@@ -4,6 +4,7 @@
   user:
     name: "{{ASTERISK_USER}}"
     uid: 9002
+    create_home: no
     shell: /bin/bash
     system: yes
 
