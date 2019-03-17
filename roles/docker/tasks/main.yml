@@ -5,43 +5,11 @@
     name: docker
     gid: 999
 
-- name: Get kernel's version
-  shell: echo $(uname -r)
-  register: kernel
-  changed_when: False
-   
-- name: Install required packages 
+- name: Install docker 
   apt: 
-    name: "{{item}}"
+    name: docker.io
     update_cache: yes
-  with_items: 
-    - apt-transport-https
-    - ca-certificates
-    - bridge-utils
-    - linux-image-extra-{{kernel.stdout}}
-    - linux-image-extra-virtual
-    - python-pip
-
-- name: Add an apt key by id from a keyserver
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-
-- name: Get release
-  shell: echo $(lsb_release -cs)
-  register: release
-  changed_when: False
-
-- name: Add docker repo
-  apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{release.stdout}} stable
-    filename: "docker"
-
-- name: Install required packages 
-  apt: 
-    name: docker-ce
-    update_cache: yes
-    
+ 
 - pip:
     name: docker-py
 
@@ -54,15 +22,6 @@
   docker_container:
     name: dockertest
     image: hello-world
-
-- name: Configure boot param
-  lineinfile:
-    path: /etc/default/grub
-    regexp: '^GRUB_CMDLINE_LINUX='
-    line: 'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
-    
-- name: update-grub
-  command: update-grub
 
 - name: Enable docker
   service:
